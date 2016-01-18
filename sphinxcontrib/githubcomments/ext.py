@@ -50,7 +50,9 @@ def visit_github_comments_node(self, node):
 
 
 def depart_github_comments_node(self, node):
-    self.body.append("</div>")
+    self.body.append(
+        '</div>\n<script async src="/_static/githubcomments.js"></script>\n'
+    )
 
 
 def setup(app):
@@ -81,4 +83,3 @@ def setup(app):
 
 def inject_comment_javascript(app):
     app.config.html_static_path.append(STATIC_DIR.path)
-    app.add_javascript("githubcomments.js")
