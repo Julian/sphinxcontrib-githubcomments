@@ -25,7 +25,7 @@ setup(
     vcversioner={
         "version_module_paths": ["sphinxcontrib/githubcomments/_version.py"],
     },
-    package_data={"" : ["sphinxcontrib/githubcomments/githubcomments.js"]},
+    include_package_data=True,
     author="Julian Berman",
     author_email="Julian@GrayVines.com",
     classifiers=classifiers,

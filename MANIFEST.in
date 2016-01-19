@@ -1,2 +1,2 @@
 include version.txt
-recursive-include *.js
+recursive-include sphinxcontrib/githubcomments/_static *.js
