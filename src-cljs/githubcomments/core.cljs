@@ -5,4 +5,4 @@
              [githubcomments.github :refer [repo-comments]]))
 
 (go (let [response (<! (repo-comments "Magnetic" "Platform-Guild"))]
-      (.log js/console (map :id (js/JSON.parse (:body response))))))
+      (.log js/console (first (map :body (:body response))))))
