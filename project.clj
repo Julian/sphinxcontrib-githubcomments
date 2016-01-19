@@ -17,4 +17,5 @@
                                 :optimizations :advanced}}}}
   :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
                                   [org.clojure/tools.nrepl "0.2.11"]]
+                   :cljsbuild {:optimizations :whitespace}
                    :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}})
