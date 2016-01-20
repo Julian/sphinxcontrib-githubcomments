@@ -8,6 +8,7 @@
 (def repo ["Magnetic" "Platform-Guild"])
 
 (defn render-comment [repo comment]
+  "Render the given comment in the context of the given repository."
   (go (let [response (async/<! (render-user-content-markdown (:body comment) repo))]
         (.log js/console (:body response)))))
 
