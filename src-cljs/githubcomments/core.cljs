@@ -7,10 +7,16 @@
 
 (def repo ["Magnetic" "Platform-Guild"])
 
-(defn render-comment [repo comment]
+(defn rendered-comment [repo comment element]
   "Render the given comment in the context of the given repository."
   (go (let [response (async/<! (render-user-content-markdown (:body comment) repo))]
         (.log js/console (:body response)))))
 
-(go (let [response (async/<! (repo-comments repo))]
-      (dorun (map (partial render-comment repo) (:body response)))))
+(defn init []
+  (let [element (dom/getElement "github-comments")]
+    (go (let [response (async/<! (repo-comments repo))]
+          (dorun (map (partial rendered-comment repo) (:body response)))))
+
+    ))
+
+(init)
