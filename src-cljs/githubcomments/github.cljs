@@ -7,7 +7,7 @@
   ([endpoint] (api-call http/get endpoint))
   ([method endpoint & [parameters]] (method (.resolve url endpoint)
                                             {:with-credentials? false
-                                             :json-parameters parameters})))
+                                             :json-params parameters})))
 
 (defn repo-comments [[owner name]]
   (api-call (Uri. (str "/repos/" owner "/" name "/comments"))))
