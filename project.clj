@@ -12,8 +12,7 @@
                  [cljs-http "0.1.39"]]
   :plugins [[lein-cljsbuild "1.1.2"]]
   :source-paths ["src-cljs"]
-  :cljsbuild {:builds [{:compiler {
-                                   :output-to "sphinxcontrib/githubcomments/_static/githubcomments.js"
+  :cljsbuild {:builds [{:compiler {:output-to "sphinxcontrib/githubcomments/_static/githubcomments.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
   :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
