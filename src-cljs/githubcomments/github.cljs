@@ -18,7 +18,7 @@
                                           :context context}))
 
 (defn render-plain-markdown [markdown]
-  (render-markdown markdown "markdown" nil))
+  (render-markdown markdown :markdown nil))
 
 (defn render-user-content-markdown [markdown [repo-name repo-owner]]
-  (render-markdown markdown "gfm" (str repo-owner "/" repo-name)))
+  (render-markdown markdown :gfm (str repo-owner "/" repo-name)))

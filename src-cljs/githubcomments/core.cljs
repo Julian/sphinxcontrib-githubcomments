@@ -7,7 +7,9 @@
 
 (def repo ["Magnetic" "Platform-Guild"])
 
-(defn render-comment [comment] (.log js/console (:body comment)))
+(defn render-comment [repo comment]
+  (go (let [response (<! (render-user-content-markdown (:body comment) repo))]
+        (.log js/console (:body response)))))
 
 (go (let [response (<! (repo-comments repo))]
-      (dorun (map render-comment (:body response)))))
+      (dorun (map (partial render-comment repo) (:body response)))))
