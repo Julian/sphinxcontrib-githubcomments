@@ -6,11 +6,18 @@
             [githubcomments.github :refer [repo-comments
                                            render-user-content-markdown]]))
 
+(defn display-comments [comments element]
+  (go-loop [merged (async/merge comments)]
+           (let [comment (<! merged)
+                 current (.-innerHTML element)]
+             (set! (.-innerHTML element) (str current comment)))
+           (recur)))
+
 (defn rendered-comment [repo comment]
   "Render the given comment in the context of the given repository."
   (go (let [response (async/<!
                        (render-user-content-markdown (:body comment) repo))]
-        (.log js/console (:body response)))))
+        (:body response))))
 
 (enable-console-print!)
 
@@ -22,6 +29,7 @@
             repo [(dataset/get element "repositoryOwner")
                   (dataset/get element "repositoryName")]
             response (async/<! (repo-comments repo))]
-        (apply println (rendered-comments repo (:body response))))))
+        (apply display-comments
+               [(rendered-comments repo (:body response)) element]))))
 
 (init)
