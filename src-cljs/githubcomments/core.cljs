@@ -28,7 +28,6 @@
             repo [(dataset/get element "repositoryOwner")
                   (dataset/get element "repositoryName")]
             response (async/<! (repo-comments repo))]
-        (apply display-comments
-               [(rendered-comments repo (:body response)) element]))))
+        (display-comments (rendered-comments repo (:body response)) element))))
 
 (init)
