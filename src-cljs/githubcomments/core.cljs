@@ -7,11 +7,10 @@
                                            render-user-content-markdown]]))
 
 (defn display-comments [comments element]
-  (go-loop [merged (async/merge comments)]
-           (let [comment (<! merged)
-                 current (.-innerHTML element)]
-             (set! (.-innerHTML element) (str current comment)))
-           (recur)))
+  (do (go (set! (.-innerHTML element) (loop [concated-comments ""]
+                                        (let [comment (async/<! comments)]
+                                          (recur (str concated-comments comment)))))
+          )))
 
 (defn rendered-comment [repo comment]
   "Render the given comment in the context of the given repository."
@@ -19,10 +18,8 @@
                        (render-user-content-markdown (:body comment) repo))]
         (:body response))))
 
-(enable-console-print!)
-
 (defn rendered-comments [repo comments]
-  (map (partial rendered-comment repo) comments))
+  (async/merge (map (partial rendered-comment repo) comments)))
 
 (defn init []
   (go (let [element (dom/getElement "github-comments")
