@@ -27,7 +27,8 @@
   (go (let [element (dom/getElement "github-comments")
             repo [(dataset/get element "repositoryOwner")
                   (dataset/get element "repositoryName")]
-            response (async/<! (repo-comments repo))]
-        (display-comments (rendered-comments repo (:body response)) element))))
+            response (async/<! (repo-comments repo))
+            comments (rendered-comments repo (:body response))]
+        (display-comments comments element))))
 
 (init)
