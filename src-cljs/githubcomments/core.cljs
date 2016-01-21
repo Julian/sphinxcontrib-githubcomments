@@ -12,14 +12,14 @@
   (go (let [response (async/<! (render-user-content-markdown (:body comment) repo))]
         (.log js/console (:body response)))))
 
+(enable-console-print!)
+
 (defn rendered-comments [repo comments]
   (map (partial rendered-comment repo) comments))
 
 (defn init []
-  (let [element (dom/getElement "github-comments")]
-    (go (let [response (async/<! (repo-comments repo))]
-          (dorun (rendered-comments repo (:body response)))))
-
-    ))
+  (go (let [response (async/<! (repo-comments repo))
+            element (dom/getElement "github-comments")]
+        (apply println (rendered-comments repo (:body response))))))
 
 (init)
