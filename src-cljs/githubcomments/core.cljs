@@ -28,8 +28,10 @@
   (go (let [element (dom/getElement "github-comments")
             repo [(dataset/get element "repositoryOwner")
                   (dataset/get element "repositoryName")]
+            path (dataset/get element "path")
             response (async/<! (repo-comments repo))
-            comments (rendered-comments repo (:body response))]
+            relevant (filter #(= (:path %1) path) (:body response))
+            comments (rendered-comments repo relevant)]
         (display-comments (async/take 10 comments) element))))
 
 (init)
