@@ -7,12 +7,7 @@
                                            render-user-content-markdown]]))
 
 (defn display-comments [comments element]
-  (do (go (set! (.-innerHTML element)
-                (loop [concated-comments ""]
-                  (let [comment (async/<! comments)]
-                    (if (nil? comment)
-                      concated-comments
-                      (recur (str concated-comments comment)))))))))
+  (go (set! (.-innerHTML element) (<! (async/reduce str "" comments)))))
 
 (defn rendered-comment [repo comment]
   "Render the given comment in the context of the given repository."
