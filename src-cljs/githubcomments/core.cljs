@@ -7,13 +7,12 @@
                                            render-user-content-markdown]]))
 
 (defn display-comments [comments element]
-  (go (set! (.-innerHTML element)
-            (str "<ul>"
-                 (<! (async/reduce
-                       #(str %1 "<li class='github-comment'>" %2 "</li>")
-                       ""
-                       comments))
-                 "</ul>"))))
+  (set! (.-innerHTML element)
+        (str "<ul>"
+             (reduce #(str %1 "<li class='github-comment'>" %2 "</li>")
+                     ""
+                     (take 10 comments))
+             "</ul>")))
 
 (defn rendered-comment [repo comment]
   "Render the given comment in the context of the given repository."
@@ -22,16 +21,16 @@
         (:body response))))
 
 (defn rendered-comments [repo comments]
-  (async/merge (map (partial rendered-comment repo) comments)))
+  (map :body_html comments))
 
 (defn init []
   (go (let [element (dom/getElement "github-comments")
             repo [(dataset/get element "repositoryOwner")
                   (dataset/get element "repositoryName")]
             path (dataset/get element "path")
-            response (async/<! (repo-comments repo))
+            response (async/<! (repo-comments repo "html"))
             relevant (filter #(= (:path %1) path) (:body response))
             comments (rendered-comments repo relevant)]
-        (display-comments (async/take 10 comments) element))))
+        (display-comments comments element))))
 
 (init)

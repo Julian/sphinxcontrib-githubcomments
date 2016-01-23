@@ -4,13 +4,24 @@
 
 (def url (Uri. "https://api.github.com/"))
 (defn api-call
-  ([endpoint] (api-call http/get endpoint))
-  ([method endpoint & [parameters]] (method (.resolve url endpoint)
-                                            {:with-credentials? false
-                                             :json-params parameters})))
+  ([endpoint] (api-call endpoint nil))
+  ([endpoint parameters] (api-call http/get endpoint nil))
+  ([method endpoint parameters] (api-call method endpoint parameters nil))
+  ([method endpoint parameters accept-param]
+   (let [accept (str "application/vnd.github.v3"
+                     (if accept-param (str "." accept-param) "")
+                     "+json")]
+     (method (.resolve url endpoint) {:with-credentials? false
+                                      :accept accept
+                                      :json-params parameters}))))
 
-(defn repo-comments [[owner name]]
-  (api-call (Uri. (str "/repos/" owner "/" name "/comments"))))
+(defn repo-comments
+  ([repo] (repo-comments repo "raw"))
+  ([[owner name] body-type] (api-call
+                              http/get
+                              (Uri. (str "/repos/" owner "/" name "/comments"))
+                              nil
+                              body-type)))
 
 (defn render-markdown [markdown mode context]
   (api-call http/post (Uri. "/markdown") {:text markdown
