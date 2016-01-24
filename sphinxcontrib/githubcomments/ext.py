@@ -70,6 +70,7 @@ def setup(app):
     app.add_node(
         GitHubCommentsNode,
         html=(visit_github_comments_node, depart_github_comments_node),
+        latex=(lambda _, __ : None, lambda _, __ : None),
     )
     app.add_directive("github-comments", GitHubCommentsDirective)
     app.connect("builder-inited", inject_comment_javascript)
