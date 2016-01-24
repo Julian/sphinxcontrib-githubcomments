@@ -32,19 +32,15 @@ class GitHubCommentsDirective(Directive):
 
 
 class GitHubCommentsNode(nodes.General, nodes.Element):
-    def __init__(self, repository_owner, repository_name, path):
-        super(GitHubCommentsNode, self).__init__()
-        self.path = path
-        self.repository_owner = repository_owner
-        self.repository_name = repository_name
+    pass
 
 
 def visit_github_comments_node(self, node):
     html_attrs = {
         "ids" : ["github-comments"],
-        "data-repository-owner" : node.repository_owner,
-        "data-repository-name" : node.repository_name,
-        "data-path" : "/".join(seg.encode("utf-8") for seg in node.path),
+        "data-repository-owner" : node["repository_owner"],
+        "data-repository-name" : node["repository_name"],
+        "data-path" : "/".join(seg.encode("utf-8") for seg in node["path"]),
     }
     self.body.append(self.starttag(node, "div", "", **html_attrs))
 
