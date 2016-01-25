@@ -15,5 +15,7 @@
   :cljsbuild {:builds [{:compiler {:output-to "sphinxcontrib/githubcomments/_static/githubcomments.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
-  :profiles {:dev {:plugins [[com.cemerick/austin "0.1.6"]
-                             [lein-cljsbuild "1.1.2"]]}})
+  :profiles {:dev {:plugins [[lein-cljsbuild "1.1.2"]]
+                   :dependencies [[com.cemerick/piggieback  "0.2.1"]]
+                   :repl-options  {:nrepl-middleware
+                                   [cemerick.piggieback/wrap-cljs-repl]}}})
