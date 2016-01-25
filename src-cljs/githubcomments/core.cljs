@@ -6,12 +6,21 @@
             [githubcomments.github :refer [repo-comments
                                            render-user-content-markdown]]))
 
+(defn comment-to-li-tag [comment]
+  (str "<li class='github-comment' id='comment-" (:id comment) "'>"
+       (let [user (:user comment)]
+         (str "<a href='" (:html_url user) "'>"
+              "<img src='" (:avatar_url user) "'>"
+              "</a>"))
+       "<div class='github-comment-content'>"
+       (:body_html comment)
+       "</div>"
+       "</li>"))
+
 (defn display-comments [comments element]
   (set! (.-innerHTML element)
         (str "<ul>"
-             (reduce #(str %1 "<li class='github-comment'>" %2 "</li>")
-                     ""
-                     (take 10 comments))
+             (reduce #(str %1 (comment-to-li-tag %2)) "" (take 10 comments))
              "</ul>")))
 
 (defn init []
@@ -20,8 +29,7 @@
                   (dataset/get element "repositoryName")]
             path (dataset/get element "path")
             response (async/<! (repo-comments repo "html"))
-            relevant (filter #(= (:path %1) path) (:body response))
-            comments-html (map :body_html relevant)]
-        (display-comments comments-html element))))
+            relevant-comments (filter #(= (:path %1) path) (:body response))]
+        (display-comments relevant-comments element))))
 
 (init)
