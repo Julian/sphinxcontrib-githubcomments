@@ -1,8 +1,10 @@
 (ns githubcomments.core
-  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require-macros [cljs.core.async.macros :refer [go]]
+                   [hiccups.core :as hiccups :refer [html]])
   (:require [cljs.core.async :as async]
             [goog.dom :as dom]
             [goog.dom.dataset :as dataset]
+            [hiccups.runtime :as hiccupsrt]
             [githubcomments.github :refer [repo-comments
                                            render-user-content-markdown]]))
 
