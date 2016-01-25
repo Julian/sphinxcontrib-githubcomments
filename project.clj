@@ -7,14 +7,13 @@
          :out)))
 
 (defproject sphinxcontrib/githubcomments version
+  :source-paths ["src-cljs"]
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.228"]
-                 [cljs-http "0.1.39"]]
-  :plugins [[lein-cljsbuild "1.1.2"]]
-  :source-paths ["src-cljs"]
+                 [cljs-http "0.1.39"]
+                 [hiccups "0.3.0"]]
   :cljsbuild {:builds [{:compiler {:output-to "sphinxcontrib/githubcomments/_static/githubcomments.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
-  :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
-                                  [org.clojure/tools.nrepl "0.2.11"]]
-                   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}})
+  :profiles {:dev {:plugins [[com.cemerick/austin "0.1.6"]
+                             [lein-cljsbuild "1.1.2"]]}})
