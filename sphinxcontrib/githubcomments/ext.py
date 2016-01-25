@@ -47,7 +47,9 @@ def visit_github_comments_node(self, node):
 
 def depart_github_comments_node(self, node):
     self.body.append(
-        '</div>\n<script async src="_static/githubcomments.js"></script>\n'
+        '</div>\n'
+        '<script async src="_static/githubcomments.js"></script>\n'
+        '<link href="_static/githubcomments.css" rel="stylesheet">\n'
     )
 
 

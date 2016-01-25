@@ -1,2 +1,3 @@
 include version.txt
 recursive-include sphinxcontrib/githubcomments/_static *.js
+recursive-include sphinxcontrib/githubcomments/_static *.css

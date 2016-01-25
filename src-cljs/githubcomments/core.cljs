@@ -10,7 +10,7 @@
   (str "<li class='github-comment' id='comment-" (:id comment) "'>"
        (let [user (:user comment)]
          (str "<a href='" (:html_url user) "'>"
-              "<img src='" (:avatar_url user) "'>"
+              "<img class='avatar' src='" (:avatar_url user) "'>"
               "</a>"))
        "<div class='github-comment-content'>"
        (:body_html comment)
