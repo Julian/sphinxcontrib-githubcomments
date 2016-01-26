@@ -18,19 +18,21 @@
                    [:p.github-comment-author (:login user)]]))]
          [:div.github-comment-content (:body_html comment)]]))
 
-(defn display-comments [comments element]
-  (set! (.-innerHTML element)
-        (html [:ul (for [comment (take 10 comments)]
-                     (comment-to-li-tag comment))])))
+(defn comments-to-ul [comments]
+  (html [:ul
+         (for [comment (take 10 comments)] (comment-to-li-tag comment))]))
+
+(defn error-msg [response] (html [:p "Cannot display comments."]))
 
 (defn init []
   (go (let [element (dom/getElement "github-comments")
             repo [(dataset/get element "repositoryOwner")
                   (dataset/get element "repositoryName")]
             path (dataset/get element "path")
-            response (async/<! (repo-comments repo "html"))
-            relevant-comments (filter #(= (:path %1) path) (:body response))]
-        (prn response)
-        (display-comments relevant-comments element))))
+            response (async/<!  (repo-comments repo "html"))
+            relevant-comments (filter #(= (:path %1) path)(:body response))]
+        (set! (.-innerHTML element) (if (:success response)
+                                      (comments-to-ul relevant-comments)
+                                      (error-msg response))))))
 
 (init)
