@@ -19,8 +19,8 @@
          [:div.github-comment-content (:body_html comment)]]))
 
 (defn comments-to-ul [comments]
-  (html [:ul
-         (for [comment (take 10 comments)] (comment-to-li-tag comment))]))
+  (html [:ul (for [comment (take 10 comments)]
+               (comment-to-li-tag comment))]))
 
 (defn error-msg [response] (html [:p "Cannot display comments."]))
 
