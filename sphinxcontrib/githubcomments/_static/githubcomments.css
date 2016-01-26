@@ -2,3 +2,11 @@ img.github-avatar {
     width: 20px;
     height: 20px;
 }
+
+p.github-comment-author {
+    font-size: 11px;
+}
+
+div.github-comment-content {
+    font-size: 12px;
+}
