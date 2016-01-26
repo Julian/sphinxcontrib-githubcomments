@@ -9,21 +9,19 @@
                                            render-user-content-markdown]]))
 
 (defn comment-to-li-tag [comment]
-  (str "<li class='github-comment' id='comment-" (:id comment) "'>"
-       (let [user (:user comment)]
-         (str "<a href='" (:html_url user) "'>"
-              "<img class='avatar' src='" (:avatar_url user) "'>"
-              "</a>"))
-       "<div class='github-comment-content'>"
-       (:body_html comment)
-       "</div>"
-       "</li>"))
+  (html [:li.github-comment {:id (str "comment-" (:id comment))}
+         [:div.github-comment-metadata
+          (let [user (:user comment)]
+            (list [:a {:href (:html_url user)}
+                   [:img.github-avatar {:src (:avatar_url user)}]]
+                  [:a {:href (:html_url user)}
+                   [:p.github-comment-author (:login user)]]))]
+         [:div.github-comment-content (:body_html comment)]]))
 
 (defn display-comments [comments element]
   (set! (.-innerHTML element)
-        (str "<ul>"
-             (reduce #(str %1 (comment-to-li-tag %2)) "" (take 10 comments))
-             "</ul>")))
+        (html [:ul (for [comment (take 10 comments)]
+                     (comment-to-li-tag comment))])))
 
 (defn init []
   (go (let [element (dom/getElement "github-comments")
