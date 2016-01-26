@@ -30,6 +30,7 @@
             path (dataset/get element "path")
             response (async/<! (repo-comments repo "html"))
             relevant-comments (filter #(= (:path %1) path) (:body response))]
+        (prn response)
         (display-comments relevant-comments element))))
 
 (init)
