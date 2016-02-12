@@ -9,16 +9,22 @@
                                            render-user-content-markdown]]))
 
 (defn comment-to-li-tag [comment]
+  (prn comment)
   (html [:li.github-comment {:id (str "comment-" (:id comment))}
          [:div.github-comment-metadata
           (let [user (:user comment)]
-            (list [:a {:href (:html_url user)}
-                   [:img.github-avatar {:src (:avatar_url user)}]]
-                  [:a {:href (:html_url user)}
-                   [:p.github-comment-author (:login user)]]))]
-         [:div.github-comment-content (:body_html comment)]
-         [:div.github-comment-footer
-          [:a {:href (:html_url comment)} "View on GitHub"]]]))
+            [:p
+             [:a {:href (:html_url user)}
+              [:img.github-avatar {:src (:avatar_url user)}]]
+             [:a {:href (:html_url user)}
+              [:span.github-comment-author (:login user)]]
+             " commented at "
+             [:span.github-comment-date (:created_at comment)]
+             " on "
+             [:span.github-comment-commit
+              [:a {:href (:html_url comment)}
+               (subs (:commit_id comment) 0 7)]]])]
+         [:div.github-comment-content (:body_html comment)]]))
 
 (defn comments-to-ul [comments]
   (html [:ul (for [comment (take 10 comments)]
