@@ -16,7 +16,9 @@
                    [:img.github-avatar {:src (:avatar_url user)}]]
                   [:a {:href (:html_url user)}
                    [:p.github-comment-author (:login user)]]))]
-         [:div.github-comment-content (:body_html comment)]]))
+         [:div.github-comment-content (:body_html comment)]
+         [:div.github-comment-footer
+          [:a {:href (:html_url comment)} "View on GitHub"]]]))
 
 (defn comments-to-ul [comments]
   (html [:ul (for [comment (take 10 comments)]
