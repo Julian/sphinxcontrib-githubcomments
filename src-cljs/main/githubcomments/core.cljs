@@ -2,6 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go]]
                    [hiccups.core :as hiccups :refer [html]])
   (:require [cljs.core.async :as async]
+            [cljsjs.moment]
             [goog.dom :as dom]
             [goog.dom.dataset :as dataset]
             [hiccups.runtime :as hiccupsrt]
@@ -9,21 +10,19 @@
                                            render-user-content-markdown]]))
 
 (defn comment-to-li-tag [comment]
-  (prn comment)
   (html [:li.github-comment {:id (str "comment-" (:id comment))}
          [:div.github-comment-metadata
-          (let [user (:user comment)]
+          (let [user (:user comment)
+                created-at-str (:created_at comment)
+                created-at (js/moment created-at-str)]
             [:p
              [:a {:href (:html_url user)}
               [:img.github-avatar {:src (:avatar_url user)}]]
              [:a {:href (:html_url user)}
               [:span.github-comment-author (:login user)]]
-             " commented at "
-             [:span.github-comment-date (:created_at comment)]
-             " on "
-             [:span.github-comment-commit
-              [:a {:href (:html_url comment)}
-               (subs (:commit_id comment) 0 7)]]])]
+             " added a note "
+             [:time.github-comment-time {:datetime created-at-str}
+              [:a {:href (:html_url comment)} (.fromNow created-at)]]])]
          [:div.github-comment-content (:body_html comment)]]))
 
 (defn comments-to-ul [comments]
