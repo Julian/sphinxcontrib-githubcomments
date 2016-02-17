@@ -32,6 +32,6 @@
                                 {:compiler {:pretty-print true}
                                  :source-map true}}}}
              :release {:cljsbuild {:builds
-                               {:main
-                                {:compiler {:optimizations :advanced
-                                            :pretty-print false}}}}}})
+                                   {:main
+                                    {:compiler {:optimizations :advanced
+                                                :pretty-print false}}}}}})
