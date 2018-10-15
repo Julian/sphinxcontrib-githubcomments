@@ -1,7 +1,10 @@
 from bp.filepath import FilePath
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from sphinx.application import ExtensionError
+try:
+    from sphinx.errors import ExtensionError
+except ImportError:
+    from sphinx.application import ExtensionError
 
 from sphinxcontrib.githubcomments import __version__
 
